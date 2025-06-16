@@ -1,0 +1,509 @@
+/* Variables de couleur et polices */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --background-color: #e9ecef;
+    --card-bg-color: #ffffff;
+    --text-color: #212529;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Style de base */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Header */
+header {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Cartes (Cards) */
+.card {
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--box-shadow);
+}
+
+.card h2 {
+    margin-top: 0;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+/* Grille pour les données de capteurs */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.sensor-item {
+    background-color: var(--light-color);
+    border-left: 5px solid var(--success-color);
+    padding: 1rem;
+    border-radius: 4px;
+}
+.sensor-item.humidity {
+    border-left-color: #17a2b8; /* Info color */
+}
+
+.sensor-item p {
+    margin: 0.2rem 0;
+}
+.sensor-item .value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--dark-color);
+}
+.sensor-item .location {
+    font-style: italic;
+    color: var(--secondary-color);
+}
+
+/* Formulaires */
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.slider-group input[type="range"] {
+    flex-grow: 1;
+}
+
+/* Boutons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+.btn:hover {
+    background-color: #0056b3;
+}
+.btn-secondary {
+    background-color: var(--secondary-color);
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Conteneur pour Connexion/Inscription */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.auth-container .card {
+    width: 100%;
+    max-width: 400px;
+}
+.switch-auth {
+    margin-top: 1rem;
+    text-align: center;
+}
+.error-text {
+    color: var(--danger-color);
+    text-align: center;
+    min-height: 1.2em;
+}
+.message-text {
+    color: var(--success-color);
+    text-align: center;
+    min-height: 1.2em;
+}
+
+/* Notifications */
+.notification {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    color: white;
+    display: none; /* Caché par défaut */
+}
+.notification.success {
+    background-color: var(--success-color);
+    display: block;
+}
+.notification.error {
+    background-color: var(--danger-color);
+    display: block;
+}
+
+/* Liste de capteurs */
+#sensors-list {
+    list-style: none;
+    padding: 0;
+}
+#sensors-list li {
+    background-color: #f2f2f2;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+
+/* --- AMÉLIORATIONS VISUELLES DE LA PAGE D'ACCUEIL --- */
+
+/* Ajout d'une couleur d'accentuation thématique (ambre/bière) */
+:root {
+    --accent-color: #f39c12; /* Une couleur ambrée/dorée */
+}
+
+/* --- AMÉLIORATIONS VISUELLES DE LA PAGE D'ACCUEIL --- */
+
+/* ... (gardez les styles précédents comme :root, .features, etc.) ... */
+
+
+/* --- NOUVEAU BLOC AMÉLIORÉ POUR LA SECTION HERO --- */
+
+.hero {
+    display: flex;
+    flex-direction: column; /* Aligne les enfants verticalement */
+    justify-content: center; /* Centre verticalement */
+    align-items: center; /* Centre horizontalement */
+    min-height: 90vh;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden; /* Important pour l'overlay */
+    background-image: url('https://images.pexels.com/photos/5951368/pexels-photo-5951368.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-size: cover;
+    background-position: center center;
+}
+
+/* 1. CONTRASTE : Overlay plus sombre et un gradient subtil */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+    z-index: 1;
+}
+
+/* 2. MISE AU POINT : Conteneur plus compact et centré */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 750px; /* Plus étroit pour mieux focaliser le regard */
+    animation: fadeInDown 1s ease-out forwards;
+}
+
+/* 1. CONTRASTE : Ombre portée pour faire ressortir le texte */
+.hero h1 {
+    font-family: 'Roboto Slab', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    color: white;
+    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease-out 0.3s forwards;
+    opacity: 0; /* Caché pour l'animation */
+}
+
+.hero .subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    color: rgba(255, 255, 255, 0.9); /* Blanc légèrement transparent */
+    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
+    margin-bottom: 2.5rem;
+    animation: fadeInUp 1s ease-out 0.6s forwards;
+    opacity: 0; /* Caché pour l'animation */
+}
+
+/* 3. IMPACT VISUEL : Bouton avec la couleur d'accentuation */
+.hero .btn-large {
+    background-color: var(--accent-color);
+    color: var(--dark-color);
+    font-weight: 700;
+    border: 2px solid var(--accent-color);
+    transition: background-color 0.3s, color 0.3s;
+    animation: fadeInUp 1s ease-out 0.9s forwards;
+    opacity: 0; /* Caché pour l'animation */
+}
+
+.hero .btn-large:hover {
+    background-color: transparent;
+    color: var(--accent-color);
+    transform: translateY(-3px); /* Effet de soulèvement plus prononcé */
+}
+
+/* --- AJOUTEZ CE BLOC À LA FIN DE VOTRE FICHIER CSS --- */
+
+/* 3. IMPACT VISUEL : Animations d'apparition */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.btn-large:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+/* Amélioration des cartes de fonctionnalités */
+.features h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+.feature-card h3 {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+/* Sections alternées (Image / Texte) */
+.alternating-section {
+    padding: 5rem 1rem;
+}
+.container-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.alternating-section .image-container {
+    flex: 1 1 45%; /* flex-grow, flex-shrink, flex-basis */
+}
+.alternating-section .image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.alternating-section .text-container {
+    flex: 1 1 55%;
+}
+.alternating-section .text-container h2 {
+    font-family: 'Roboto Slab', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--dark-color);
+    margin-top: 0;
+}
+.alternating-section .text-container p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* Inverser l'ordre pour la section suivante */
+.container-flex.reversed {
+    flex-direction: row-reverse;
+}
+
+/* Fond alternatif pour varier le rythme */
+.alt-bg {
+    background-color: var(--light-color);
+}
+
+/* Section d'appel à l'action (CTA) finale */
+.cta-section {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 5rem 1rem;
+    text-align: center;
+    background-image: linear-gradient(rgba(40, 43, 48, 0.9), rgba(40, 43, 48, 0.9)), url('https://images.pexels.com/photos/167832/pexels-photo-167832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-size: cover;
+    background-attachment: fixed; /* Effet parallax */
+}
+.cta-section h2 {
+    font-family: 'Roboto Slab', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+}
+.cta-section p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Rendre les sections alternées responsives sur mobile */
+@media (max-width: 768px) {
+    .container-flex,
+    .container-flex.reversed {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .alternating-section {
+        padding: 3rem 1rem;
+    }
+}
+
+/* --- STYLES POUR LES GRAPHIQUES --- */
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* La courbe prend plus de place */
+    gap: 2rem;
+}
+
+.chart-container {
+    position: relative;
+    /* On définit une hauteur minimale et maximale pour le conteneur */
+    min-height: 400px;
+    max-height: 60vh; /* 60% de la hauteur de la vue */
+    width: 100%;
+}
+
+/* La courbe prend toute la première ligne */
+.chart-container:first-child {
+    grid-column: 1 / -1;
+}
+
+.chart-container h3 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+/* Responsive pour les mobiles */
+@media (max-width: 992px) {
+    .chart-grid {
+        grid-template-columns: 1fr; /* Une seule colonne sur les écrans plus petits */
+    }
+}
+
+/* --- Style pour l'aperçu de graphique cliquable --- */
+.chart-preview-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Important pour l'overlay */
+}
+
+.chart-preview {
+    min-height: 250px;
+    position: relative;
+}
+
+.chart-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+
+.chart-preview-link:hover .chart-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+}
+
+/* --- STYLES POUR LA PAGE D'ANALYSE --- */
+.analytics-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes par défaut */
+}
+
+/* La courbe d'évolution prend toute la largeur */
+.analytics-grid .large-chart {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 992px) {
+    .analytics-grid {
+        grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+    }
+}

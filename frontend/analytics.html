@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse Détaillée - Brewhouse Control</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 1. Charger la bibliothèque principale Chart.js v4 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- 2. Charger l'adaptateur de date officiel compatible v4 (qui inclut date-fns) -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    
+    <!-- 3. Charger le plugin Box Plot dédié (et non plus le plugin 'matrix') -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-boxplot@4.2.0/dist/chartjs-chart-boxplot.umd.min.js"></script>
+</head>
+</head>
+<body>
+    <header>
+        <h1>Analyse Détaillée</h1>
+        <div class="user-info">
+             <a href="dashboard.html" class="btn btn-secondary">Retour au Tableau de Bord</a>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- PIÈCE MANQUANTE : LE PANNEAU DE CONTRÔLE DES DATES -->
+        <section class="card">
+            <h2>Sélectionner une Période d'Analyse</h2>
+            <div id="controls-container">
+                <div class="form-group">
+                    <label for="date-debut">Date de début :</label>
+                    <input type="date" id="date-debut" name="date-debut">
+                </div>
+                <div class="form-group">
+                    <label for="date-fin">Date de fin :</label>
+                    <input type="date" id="date-fin" name="date-fin">
+                </div>
+                <button id="load-charts-btn" class="btn">Charger les Graphiques</button>
+            </div>
+            <p id="analytics-error" class="error-text"></p>
+        </section>
+        <!-- FIN DE LA PIÈCE MANQUANTE -->
+
+        <!-- SECTION POUR LA TEMPÉRATURE -->
+        <section class="card">
+            <h2>🌡️ Analyse de la Température</h2>
+            <div class="chart-grid analytics-grid">
+                <div class="chart-container large-chart">
+                    <h3>Évolution Temporelle</h3>
+                    <canvas id="tempTimeSeriesChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Distribution des Valeurs</h3>
+                    <canvas id="tempDistributionChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Analyse Statistique (Box Plot)</h3>
+                    <canvas id="tempBoxPlotChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION POUR L'HUMIDITÉ -->
+        <section class="card">
+            <h2>💧 Analyse de l'Humidité</h2>
+            <div class="chart-grid analytics-grid">
+                 <div class="chart-container large-chart">
+                    <h3>Évolution Temporelle</h3>
+                    <canvas id="humidityTimeSeriesChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Distribution des Valeurs</h3>
+                    <canvas id="humidityDistributionChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Analyse Statistique (Box Plot)</h3>
+                    <canvas id="humidityBoxPlotChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="js/analytics.js"></script>
+</body>
+</html>
