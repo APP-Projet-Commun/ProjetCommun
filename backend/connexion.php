@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $data->username;
     $password = $data->password;
 
-    $stmt = $db->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt = $pdo_mysql->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 

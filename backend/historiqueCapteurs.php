@@ -10,82 +10,67 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include 'bdd.php';
+// Connexion à la BDD distante PostgreSQL
+include 'db_connect.php';
 
-// Le script intelligent qui gère les deux cas
-$sql = "";
+// Définition des paramètres de la requête (limit ou date)
+$where_clause = "";
 $params = [];
+$limit_clause = "";
 
-// CAS 1 : Pour le tableau de bord (dashboard.html)
 if (isset($_GET['limit'])) {
     $limit = (int)$_GET['limit'];
-    if ($limit <= 0 || $limit > 2000) {
-        $limit = 30; // une valeur par défaut sûre
-    }
-    
-    $sql = "
-        SELECT s.name, s.type, sd.value, sd.reading_time
-        FROM sensor_data sd
-        JOIN sensors s ON sd.sensor_id = s.id
-        ORDER BY sd.reading_time DESC
-        LIMIT :limit
-    ";
-    $params = [':limit' => $limit];
+    $limit = ($limit > 0 && $limit <= 2000) ? $limit : 30;
+    $limit_clause = "LIMIT " . $limit; // LIMIT ne peut pas être un paramètre préparé
 
-// CAS 2 : Pour la page d'analyse (analytics.html)
 } else if (isset($_GET['date_debut']) && isset($_GET['date_fin'])) {
-    $date_debut_str = $_GET['date_debut'];
-    $date_fin_str = $_GET['date_fin'];
+    // ... la logique de validation des dates reste la même
+    $date_debut_sql = date('Y-m-d 00:00:00', strtotime($_GET['date_debut']));
+    $date_fin_sql = date('Y-m-d 23:59:59', strtotime($_GET['date_fin']));
+    $where_clause = "WHERE timestamp BETWEEN :date_debut AND :date_fin";
+    $params = [':date_debut' => $date_debut_sql, ':date_fin' => $date_fin_sql];
+    $limit_clause = "LIMIT 5000"; // Sécurité
 
-    $timestamp_debut = strtotime($date_debut_str);
-    $timestamp_fin = strtotime($date_fin_str);
-
-    if ($timestamp_debut === false || $timestamp_fin === false) {
-        http_response_code(400);
-        echo json_encode(['status' => 'error', 'message' => "Format de date invalide."]);
-        exit();
-    }
-    
-    $date_debut_sql = date('Y-m-d 00:00:00', $timestamp_debut);
-    $date_fin_sql = date('Y-m-d 23:59:59', $timestamp_fin);
-
-    $sql = "
-        SELECT s.name, s.type, sd.value, sd.reading_time
-        FROM sensor_data sd
-        JOIN sensors s ON sd.sensor_id = s.id
-        WHERE sd.reading_time BETWEEN :date_debut AND :date_fin
-        ORDER BY sd.reading_time ASC
-        LIMIT 5000 
-    ";
-    $params = [
-        ':date_debut' => $date_debut_sql,
-        ':date_fin' => $date_fin_sql
-    ];
-
-// CAS 3 : Erreur, aucun paramètre valide n'a été fourni
 } else {
     http_response_code(400);
-    echo json_encode(['status' => 'error', 'message' => "Paramètres manquants : veuillez fournir 'limit' ou 'date_debut' et 'date_fin'."]);
+    echo json_encode(['status' => 'error', 'message' => "Paramètres manquants."]);
     exit();
 }
 
-
-// Exécution de la requête SQL
 try {
-    $stmt = $db->prepare($sql);
-    
-    // PDO va lier les paramètres correctement, qu'ils soient INT ou STRING
-    foreach ($params as $key => &$val) {
-        $stmt->bindParam($key, $val, is_int($val) ? PDO::PARAM_INT : PDO::PARAM_STR);
-    }
-    
-    $stmt->execute();
-    $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $history = [];
 
-    // Important : on inverse le tableau UNIQUEMENT pour le cas 'limit' qui trie en DESC
-    if (isset($_GET['limit'])) {
-        $history = array_reverse($history);
+    // --- 1. Requête pour Température/Humidité ---
+    $sql_temp_hum = "SELECT value, timestamp FROM temperature_humidite $where_clause ORDER BY timestamp DESC $limit_clause";
+    $stmt_temp_hum = $pdo_pgsql->prepare($sql_temp_hum);
+    $stmt_temp_hum->execute($params);
+    while ($row = $stmt_temp_hum->fetch()) {
+        $values = json_decode($row['value'], true);
+        $history[] = ['name' => 'Température', 'type' => 'temperature', 'value' => $values['temperature'], 'reading_time' => $row['timestamp']];
+        $history[] = ['name' => 'Humidité', 'type' => 'humidity', 'value' => $values['humidite'], 'reading_time' => $row['timestamp']];
     }
+
+    // --- 2. Requête pour Gaz ---
+    $sql_gaz = "SELECT value, timestamp FROM gaz $where_clause ORDER BY timestamp DESC $limit_clause";
+    $stmt_gaz = $pdo_pgsql->prepare($sql_gaz);
+    $stmt_gaz->execute($params);
+    while ($row = $stmt_gaz->fetch()) {
+        $history[] = ['name' => 'Gaz', 'type' => 'gaz', 'value' => $row['value'], 'reading_time' => $row['timestamp']];
+    }
+
+    // --- 3. Requête pour Buzzer ---
+    $sql_buzzer = "SELECT value, timestamp FROM buzzer $where_clause ORDER BY timestamp DESC $limit_clause";
+    $stmt_buzzer = $pdo_pgsql->prepare($sql_buzzer);
+    $stmt_buzzer->execute($params);
+    while ($row = $stmt_buzzer->fetch()) {
+        $history[] = ['name' => 'Buzzer', 'type' => 'buzzer', 'value' => $row['value'], 'reading_time' => $row['timestamp']];
+    }
+
+    // --- Fusion et Tri ---
+    // On trie le tableau final par date pour que la chronologie soit correcte
+    usort($history, function($a, $b) {
+        return strtotime($a['reading_time']) <=> strtotime($b['reading_time']);
+    });
 
     echo json_encode(['status' => 'success', 'history' => $history]);
 

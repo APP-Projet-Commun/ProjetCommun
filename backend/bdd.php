@@ -1,18 +1,18 @@
 <?php
-// Fichier de connexion à la base de données
+// Fichier de connexion à la base de données LOCALE (pour les utilisateurs)
 
 header('Content-Type: application/json');
 
 try {
-  $db = new PDO(
+  // On renomme la variable pour plus de clarté
+  $pdo_mysql = new PDO(
     "mysql:host=localhost;dbname=app_commun;charset=utf8",
     "root",
-    "", // Mot de passe vide par défaut sur XAMPP, sinon mettez "root"
+    "",
     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
   );
 } catch (Exception $e) {
-  // En cas d'erreur de connexion, on envoie une réponse JSON et on arrête tout.
-  http_response_code(500); // Internal Server Error
-  echo json_encode(["status" => "error", "message" => "Erreur de connexion à la base de données."]);
+  http_response_code(500);
+  echo json_encode(["status" => "error", "message" => "Erreur de connexion à la base de données des utilisateurs."]);
   die();
 }

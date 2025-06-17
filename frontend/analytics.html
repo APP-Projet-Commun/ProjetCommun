@@ -80,6 +80,44 @@
                 </div>
             </div>
         </section>
+
+                <!-- SECTION POUR LE GAZ -->
+        <section class="card">
+            <h2>📊 Analyse du Gaz</h2>
+            <div class="chart-grid analytics-grid">
+                 <div class="chart-container large-chart">
+                    <h3>Évolution Temporelle</h3>
+                    <canvas id="gazTimeSeriesChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Distribution des Valeurs</h3>
+                    <canvas id="gazDistributionChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Analyse Statistique (Box Plot)</h3>
+                    <canvas id="gazBoxPlotChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION POUR LE BUZZER -->
+        <section class="card">
+            <h2>🔔 Analyse du Buzzer</h2>
+            <div class="chart-grid analytics-grid">
+                 <div class="chart-container large-chart">
+                    <h3>Historique d'Activation</h3>
+                    <canvas id="buzzerTimeSeriesChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Distribution des États (0/1)</h3>
+                    <canvas id="buzzerDistributionChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Analyse Statistique</h3>
+                    <canvas id="buzzerBoxPlotChart"></canvas>
+                </div>
+            </div>
+        </section>
     </main>
     <script src="js/analytics.js"></script>
 </body>

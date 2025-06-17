@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadAndRenderCharts() {
-        // ... (début de la fonction, inchangé) ...
         const dateDebut = dateDebutInput.value;
         const dateFin = dateFinInput.value;
         if (!dateDebut || !dateFin) { errorContainer.textContent = "Veuillez sélectionner une date de début et de fin."; return; }
@@ -48,28 +47,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.status !== 'success') { throw new Error(response.message || "La réponse du serveur est invalide."); }
 
             const history = response.history;
-
-            // --- CHANGEMENT CLÉ : LOGS DE DÉBOGAGE ---
-            console.log("Données reçues du serveur :", history);
             
+            // On filtre les données pour chaque type
             const tempData = history.filter(d => d.type === 'temperature');
             const humidityData = history.filter(d => d.type === 'humidity');
+            // --- AJOUTS ---
+            const gazData = history.filter(d => d.type === 'gaz');
+            const buzzerData = history.filter(d => d.type === 'buzzer');
+            // --------------
 
-            console.log("Données de Température filtrées :", tempData);
-            console.log("Données d'Humidité filtrées :", humidityData);
-            // --- FIN DU CHANGEMENT ---
-
-            // Rendu des graphiques
+            // Rendu des graphiques de Température
             renderTimeSeries(tempData, 'tempTimeSeriesChart', 'Température (°C)', 'rgba(255, 99, 132, 1)');
             renderDistribution(tempData, 'tempDistributionChart', 'Distribution Température', 'rgba(255, 99, 132, 0.7)');
             renderBoxPlot(tempData, 'tempBoxPlotChart', 'Statistiques Température');
             
+            // Rendu des graphiques d'Humidité
             renderTimeSeries(humidityData, 'humidityTimeSeriesChart', 'Humidité (%)', 'rgba(54, 162, 235, 1)');
             renderDistribution(humidityData, 'humidityDistributionChart', 'Distribution Humidité', 'rgba(54, 162, 235, 0.7)');
             renderBoxPlot(humidityData, 'humidityBoxPlotChart', 'Statistiques Humidité');
 
+            // --- AJOUTS : Rendu des nouveaux graphiques ---
+            renderTimeSeries(gazData, 'gazTimeSeriesChart', 'Gaz (ppm)', 'rgba(243, 156, 18, 1)');
+            renderDistribution(gazData, 'gazDistributionChart', 'Distribution Gaz', 'rgba(243, 156, 18, 0.7)');
+            renderBoxPlot(gazData, 'gazBoxPlotChart', 'Statistiques Gaz');
+            
+            // Pour le buzzer, un graphique en escalier est plus adapté
+            renderTimeSeries(buzzerData, 'buzzerTimeSeriesChart', 'État Buzzer (0/1)', 'rgba(142, 68, 173, 1)', true); // true pour 'stepped'
+            renderDistribution(buzzerData, 'buzzerDistributionChart', 'Distribution États Buzzer', 'rgba(142, 68, 173, 0.7)');
+            renderBoxPlot(buzzerData, 'buzzerBoxPlotChart', 'Statistiques États Buzzer');
+            // --- FIN DES AJOUTS ---
+
         } catch (error) {
-            // ... (gestion des erreurs, inchangée) ...
             console.error("Erreur lors du chargement des graphiques:", error);
             errorContainer.textContent = `Erreur : ${error.message}`;
             showLoadingMessage(false, true); 
@@ -127,7 +135,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Copiez/collez les autres fonctions ici (non modifiées) ---
     function showLoadingMessage(isLoading, isError = false) {
-        const chartIds = ['tempTimeSeriesChart', 'tempDistributionChart', 'tempBoxPlotChart', 'humidityTimeSeriesChart', 'humidityDistributionChart', 'humidityBoxPlotChart'];
+        // On ajoute les IDs des nouveaux canvas
+        const chartIds = [
+            'tempTimeSeriesChart', 'tempDistributionChart', 'tempBoxPlotChart', 
+            'humidityTimeSeriesChart', 'humidityDistributionChart', 'humidityBoxPlotChart',
+            'gazTimeSeriesChart', 'gazDistributionChart', 'gazBoxPlotChart',
+            'buzzerTimeSeriesChart', 'buzzerDistributionChart', 'buzzerBoxPlotChart'
+        ];
         chartIds.forEach(id => {
             let message = "Sélectionnez une période et cliquez sur 'Charger les Graphiques'.";
             if(isLoading) { message = "Chargement des données..."; }
@@ -217,6 +231,33 @@ document.addEventListener('DOMContentLoaded', () => {
             type: 'bar',
             data: { labels: labels, datasets: [{ label: label, data: bins, backgroundColor: color }] },
             options: { responsive: true, maintainAspectRatio: false, scales: { x: { title: { display: true, text: 'Intervalles de valeur' } }, y: { title: { display: true, text: 'Fréquence' }, beginAtZero: true } } }
+        });
+    }
+
+        // Ajout d'un paramètre 'stepped' à la fin
+    function renderTimeSeries(data, canvasId, label, color, stepped = false) {
+        if (!data || data.length === 0) {
+            drawEmptyChartMessage(canvasId, "Aucune donnée à afficher pour cette période.");
+            return;
+        }
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        const chartData = data.map(d => ({ x: new Date(d.reading_time), y: d.value }));
+        charts[canvasId] = new Chart(ctx, {
+            type: 'line',
+            // On ajoute la propriété 'stepped' ici
+            data: { datasets: [{ label: label, data: chartData, borderColor: color, tension: 0.1, pointRadius: 1, stepped: stepped }] },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                scales: { 
+                    x: { type: 'time', time: { unit: 'hour', tooltipFormat: 'dd/MM/yy HH:mm' }, title: { display: true, text: 'Date' } }, 
+                    y: { 
+                        title: { display: true, text: 'Valeur' },
+                        // Pour le buzzer, on force les ticks à 0 et 1
+                        ticks: (canvasId.includes('buzzer')) ? { min: 0, max: 1, stepSize: 1 } : {}
+                    } 
+                } 
+            }
         });
     }
 });

@@ -34,7 +34,7 @@ if (empty($username) || empty($password)) {
 $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
 try {
-    $stmt = $db->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
+    $stmt = $pdo_mysql->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
     $stmt->execute([$username, $password_hash]);
     echo json_encode(['status' => 'success', 'message' => 'Inscription réussie. Vous pouvez maintenant vous connecter.']);
 } catch (PDOException $e) {

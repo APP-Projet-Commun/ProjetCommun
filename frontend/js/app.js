@@ -26,22 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const humSlider = document.getElementById('humidite');
     const tempValueSpan = document.getElementById('temp-value');
     const humValueSpan = document.getElementById('hum-value');
-    const addSensorForm = document.getElementById('add-sensor-form');
-    const sensorsList = document.getElementById('sensors-list');
+    // const addSensorForm = document.getElementById('add-sensor-form');
+    // const sensorsList = document.getElementById('sensors-list');
     
-    // --- Initialisation du Dashboard ---
+        // --- Initialisation du Dashboard ---
     async function initializeDashboard() {
         try {
             await checkAuth();
-            const [sensorListData, latestSensorData, historyData] = await Promise.all([
-                apiRequest('gestionCapteurs.php', { method: 'GET' }),
+            // On retire la requête vers gestionCapteurs.php
+            const [latestSensorData, historyData] = await Promise.all([
                 apiRequest('affichageCapteurs.php'),
-                // IMPORTANT : On ne charge que les 30 derniers points pour l'aperçu
                 apiRequest('historiqueCapteurs.php?limit=30') 
             ]);
 
             loadSensorData(latestSensorData);
-            loadSensors(sensorListData);
+            // On retire l'appel à la fonction obsolète
+            // loadSensors(sensorListData); 
             renderPreviewChart(historyData);
         } catch (error) {
             console.error("Impossible d'initialiser le tableau de bord:", error);
@@ -64,16 +64,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadSensorData(result) {
         if (result && result.status === 'success' && result.data.length > 0) {
-            sensorDataContainer.innerHTML = '';
+            sensorDataContainer.innerHTML = ''; // On vide le conteneur
+            
             result.data.forEach(sensor => {
                 const item = document.createElement('div');
+                // On applique une classe CSS en fonction du type de capteur (temperature, humidity, gaz, buzzer)
                 item.className = `sensor-item ${sensor.type}`;
+                
+                // --- Logique améliorée pour les unités et l'affichage des valeurs ---
+                let unit = '';
+                let displayValue = parseFloat(sensor.value).toFixed(1);
+
+                switch(sensor.type) {
+                    case 'temperature':
+                        unit = '°C';
+                        break;
+                    case 'humidity':
+                        unit = '%';
+                        break;
+                    case 'gaz':
+                        unit = ' ppm'; // Parts Per Million, une unité commune pour les gaz
+                        displayValue = parseInt(sensor.value); // Pas de décimale pour le gaz
+                        break;
+                    case 'buzzer':
+                        unit = ''; // Pas d'unité pour le buzzer
+                        displayValue = (sensor.value == 1) ? 'Activé' : 'Désactivé'; // Affichage plus clair
+                        break;
+                }
+                // --- Fin de la logique améliorée ---
+
                 item.innerHTML = `
                     <p class="name"><strong>${sensor.name}</strong></p>
-                    <p class="value">${parseFloat(sensor.value).toFixed(1)} ${sensor.type === 'temperature' ? '°C' : '%'}</p>
+                    <p class="value">${displayValue}${unit}</p>
                     <p class="location">${sensor.location}</p>
                     <p class="time"><small>Lu le: ${new Date(sensor.reading_time).toLocaleString('fr-FR')}</small></p>
                 `;
+                
                 sensorDataContainer.appendChild(item);
             });
         } else {
@@ -91,29 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showNotification(result.message, 'success');
     });
 
-    function loadSensors(result) {
-        if (result && result.status === 'success') {
-            sensorsList.innerHTML = '';
-            result.sensors.forEach(s => {
-                const li = document.createElement('li');
-                li.textContent = `${s.name} (${s.type}) - ${s.location}`;
-                sensorsList.appendChild(li);
-            });
-        }
-    }
-
-    addSensorForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = { name: document.getElementById('sensor-name').value, type: document.getElementById('sensor-type').value, location: document.getElementById('sensor-location').value };
-        const result = await apiRequest('gestionCapteurs.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-        if(result.status === 'success') {
-            showNotification(result.message, 'success');
-            addSensorForm.reset();
-            const newSensorListData = await apiRequest('gestionCapteurs.php', { method: 'GET' });
-            loadSensors(newSensorListData);
-        }
-    });
-
+    
     function showNotification(message, type = 'success') {
         const notif = document.getElementById('notification');
         notif.textContent = message;
