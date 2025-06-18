@@ -1,6 +1,13 @@
 <?php
 session_start();
-header("Access-Control-Allow-Origin: http://localhost:3000");
+// Accepte dynamiquement l'origine de la requête du navigateur.
+// C'est une solution sûre pour le développement qui fonctionne avec les credentials.
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+} else {
+    // Solution de secours si l'origine n'est pas envoyée
+    header("Access-Control-Allow-Origin: *");
+}
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
 

@@ -1,6 +1,13 @@
 <?php
 session_start();
-header("Access-Control-Allow-Origin: http://localhost:3000"); // Autorise React à communiquer
+// Accepte l'origine de la requête, quelle qu'elle soit.
+// ATTENTION : Ne pas utiliser en production sans une liste blanche !
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+} else {
+    // Si la requête ne vient pas d'un navigateur (ex: Postman), on peut mettre une valeur par défaut
+    header("Access-Control-Allow-Origin: *"); 
+}
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
