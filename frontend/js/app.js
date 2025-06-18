@@ -1,5 +1,7 @@
 const API_BASE_URL = '../backend';
 let previewChartInstance;
+let oledUpdateInterval = null; // Variable pour stocker notre timer
+
 
 async function apiRequest(endpoint, options = {}) {
     options.credentials = 'include';
@@ -22,10 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
     const sensorDataContainer = document.getElementById('sensor-data-container');
     const actuatorForm = document.getElementById('actuator-form');
+
     const tempSlider = document.getElementById('temperature');
     const humSlider = document.getElementById('humidite');
     const tempValueSpan = document.getElementById('temp-value');
     const humValueSpan = document.getElementById('hum-value');
+    const gazSlider = document.getElementById('gaz');
+    const gazValueSpan = document.getElementById('gaz-value');
+    const buzzerCheckbox = document.getElementById('buzzer');
+
+    const startOledBtn = document.getElementById('start-oled-update');
+    const stopOledBtn = document.getElementById('stop-oled-update');
+    const oledStatusDiv = document.getElementById('oled-status');
     // const addSensorForm = document.getElementById('add-sensor-form');
     // const sensorsList = document.getElementById('sensors-list');
     
@@ -110,11 +120,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Fonctions des formulaires (inchangées) ---
     tempSlider.addEventListener('input', () => tempValueSpan.textContent = `${parseFloat(tempSlider.value).toFixed(1)}°C`);
     humSlider.addEventListener('input', () => humValueSpan.textContent = `${humSlider.value}%`);
+    gazSlider.addEventListener('input', () => gazValueSpan.textContent = `${gazSlider.value} ppm`);
+
     actuatorForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const data = { temperature: parseFloat(tempSlider.value), humidite: parseInt(humSlider.value) };
-        const result = await apiRequest('actionneur.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-        showNotification(result.message, 'success');
+        
+        // On récupère les 4 valeurs du formulaire
+        const data = {
+            temperature: parseFloat(tempSlider.value),
+            humidite: parseInt(humSlider.value),
+            gaz: parseInt(gazSlider.value),
+            buzzer: buzzerCheckbox.checked ? 1 : 0 // On convertit true/false en 1/0
+        };
+        
+        // Le reste de la fonction ne change pas. apiRequest s'occupe de tout envoyer.
+        try {
+            const result = await apiRequest('actionneur.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            showNotification(result.message, 'success');
+        } catch (error) {
+            // La gestion d'erreur globale dans apiRequest affichera déjà une notification
+            console.error("Erreur lors de l'envoi de la commande manuelle", error);
+        }
     });
 
     
@@ -161,4 +191,50 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Fonction qui appelle le backend pour mettre à jour l'écran
+    async function updateOledScreen() {
+        try {
+            console.log("Tentative de mise à jour de l'OLED...");
+            const result = await apiRequest('update_oled.php', { method: 'POST' });
+            oledStatusDiv.textContent = `Dernière mise à jour : ${new Date().toLocaleTimeString()}. Commande envoyée : ${result.command_sent}`;
+            oledStatusDiv.className = 'status-message active';
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour de l'OLED:", error);
+            oledStatusDiv.textContent = `Erreur : ${error.message}`;
+            oledStatusDiv.className = 'status-message error';
+            stopAutoUpdate(); // Arrêter en cas d'erreur pour éviter de spammer
+        }
+    }
+
+    // Fonction pour démarrer la mise à jour automatique
+    function startAutoUpdate() {
+        if (oledUpdateInterval) return; // Déjà en cours, on ne fait rien
+
+        // Mise à jour immédiate au clic, puis toutes les 10 secondes
+        updateOledScreen(); 
+        oledUpdateInterval = setInterval(updateOledScreen, 10000); // 10000 ms = 10s
+
+        // Mise à jour de l'interface
+        startOledBtn.disabled = true;
+        stopOledBtn.disabled = false;
+        oledStatusDiv.textContent = 'Mise à jour automatique activée...';
+        oledStatusDiv.className = 'status-message active';
+    }
+
+    // Fonction pour arrêter la mise à jour
+    function stopAutoUpdate() {
+        clearInterval(oledUpdateInterval);
+        oledUpdateInterval = null;
+
+        // Mise à jour de l'interface
+        startOledBtn.disabled = false;
+        stopOledBtn.disabled = true;
+        oledStatusDiv.textContent = 'État : Inactif';
+        oledStatusDiv.className = 'status-message';
+    }
+
+    // Ajout des écouteurs d'événements sur les boutons
+    startOledBtn.addEventListener('click', startAutoUpdate);
+    stopOledBtn.addEventListener('click', stopAutoUpdate);
 });

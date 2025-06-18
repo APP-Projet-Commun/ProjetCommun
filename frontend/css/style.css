@@ -527,3 +527,44 @@ header h1 {
 .sensor-item.buzzer {
     border-left-color: #8e44ad; /* Une couleur violette distinctive */
 }
+
+/* Styles pour le panneau de contrôle OLED */
+.oled-buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.status-message {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    border-left: 4px solid var(--secondary-color);
+    transition: all 0.3s;
+}
+
+.status-message.active {
+    background-color: #e8f5e9; /* Vert clair */
+    border-left-color: var(--success-color);
+    font-weight: bold;
+}
+
+.status-message.error {
+    background-color: #fbe9e7; /* Rouge clair */
+    border-left-color: var(--danger-color);
+}
+
+/* Style pour le groupe de la checkbox */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espace entre le label et la case */
+}
+
+/* On agrandit un peu la case pour qu'elle soit plus facile à cliquer */
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
