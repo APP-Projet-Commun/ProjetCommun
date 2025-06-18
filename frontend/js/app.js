@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost/ProjetCommun/backend';
+const API_BASE_URL = 'http://localhost:8888/ProjetCommun-main/backend';
 let previewChartInstance;
 
 async function apiRequest(endpoint, options = {}) {
