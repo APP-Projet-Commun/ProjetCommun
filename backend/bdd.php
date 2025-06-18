@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 try {
   // On renomme la variable pour plus de clarté
   $pdo_mysql = new PDO(
-    "mysql:host=localhost;port=8889;dbname=app_commun;charset=utf8",
+    "mysql:host=localhost;dbname=app_commun;charset=utf8",
     "root",
     "",
     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
