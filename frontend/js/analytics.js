@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://localhost:8888/ProjetCommun-main/backend';
+    const API_BASE_URL = 'http://localhost:8888/ProjetCommun/backend';
 
     // ... (éléments du DOM et configuration des dates, inchangés) ...
     const loadBtn = document.getElementById('load-charts-btn');

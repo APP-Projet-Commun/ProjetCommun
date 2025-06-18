@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8888/ProjetCommun-main/backend';
+const API_BASE_URL = 'http://localhost/ProjetCommun/backend';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
