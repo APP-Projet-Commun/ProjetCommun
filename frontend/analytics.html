@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analyse Détaillée - Brewhouse Control</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- 1. Charger la bibliothèque principale Chart.js v4 -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-    <!-- 2. Charger l'adaptateur de date officiel compatible v4 (qui inclut date-fns) -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    
-    <!-- 3. Charger le plugin Box Plot dédié (et non plus le plugin 'matrix') -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-boxplot@4.2.0/dist/chartjs-chart-boxplot.umd.min.js"></script>
-</head>
 </head>
 <body>
     <header>
@@ -25,7 +16,6 @@
 
     <main class="container">
 
-        <!-- PIÈCE MANQUANTE : LE PANNEAU DE CONTRÔLE DES DATES -->
         <section class="card">
             <h2>Sélectionner une Période d'Analyse</h2>
             <div id="controls-container">
@@ -41,11 +31,10 @@
             </div>
             <p id="analytics-error" class="error-text"></p>
         </section>
-        <!-- FIN DE LA PIÈCE MANQUANTE -->
 
         <!-- SECTION POUR LA TEMPÉRATURE -->
         <section class="card">
-            <h2>🌡️ Analyse de la Température</h2>
+            <h2>Analyse de la Température</h2>
             <div class="chart-grid analytics-grid">
                 <div class="chart-container large-chart">
                     <h3>Évolution Temporelle</h3>
@@ -57,14 +46,15 @@
                 </div>
                 <div class="chart-container">
                     <h3>Analyse Statistique (Box Plot)</h3>
-                    <canvas id="tempBoxPlotChart"></canvas>
+                    <!-- Changé en DIV pour ApexCharts -->
+                    <div id="tempBoxPlotChart"></div>
                 </div>
             </div>
         </section>
 
         <!-- SECTION POUR L'HUMIDITÉ -->
         <section class="card">
-            <h2>💧 Analyse de l'Humidité</h2>
+            <h2>Analyse de l'Humidité</h2>
             <div class="chart-grid analytics-grid">
                  <div class="chart-container large-chart">
                     <h3>Évolution Temporelle</h3>
@@ -76,14 +66,15 @@
                 </div>
                 <div class="chart-container">
                     <h3>Analyse Statistique (Box Plot)</h3>
-                    <canvas id="humidityBoxPlotChart"></canvas>
+                    <!-- Changé en DIV pour ApexCharts -->
+                    <div id="humidityBoxPlotChart"></div>
                 </div>
             </div>
         </section>
 
-                <!-- SECTION POUR LE GAZ -->
+        <!-- SECTION POUR LE GAZ -->
         <section class="card">
-            <h2>📊 Analyse du Gaz</h2>
+            <h2>Analyse du Gaz</h2>
             <div class="chart-grid analytics-grid">
                  <div class="chart-container large-chart">
                     <h3>Évolution Temporelle</h3>
@@ -95,14 +86,15 @@
                 </div>
                 <div class="chart-container">
                     <h3>Analyse Statistique (Box Plot)</h3>
-                    <canvas id="gazBoxPlotChart"></canvas>
+                    <!-- Changé en DIV pour ApexCharts -->
+                    <div id="gazBoxPlotChart"></div>
                 </div>
             </div>
         </section>
 
         <!-- SECTION POUR LE BUZZER -->
         <section class="card">
-            <h2>🔔 Analyse du Buzzer</h2>
+            <h2>Analyse du Buzzer</h2>
             <div class="chart-grid analytics-grid">
                  <div class="chart-container large-chart">
                     <h3>Historique d'Activation</h3>
@@ -114,11 +106,18 @@
                 </div>
                 <div class="chart-container">
                     <h3>Analyse Statistique</h3>
-                    <canvas id="buzzerBoxPlotChart"></canvas>
+                    <!-- Changé en DIV pour ApexCharts -->
+                    <div id="buzzerBoxPlotChart"></div>
                 </div>
             </div>
         </section>
     </main>
+
+    <!-- === BLOC DE SCRIPTS FINAL === -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="js/analytics.js"></script>
+    <!-- === FIN DU BLOC DE SCRIPTS === -->
 </body>
 </html>
