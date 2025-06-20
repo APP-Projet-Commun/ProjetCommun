@@ -1,95 +1,125 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tableau de Bord</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Tableau de Bord</h1>
-        <div class="user-info">
-            <span id="welcome-user"></span>
-            <button id="logout-btn" class="btn btn-secondary">Déconnexion</button>
-        </div>
+      <h1>Tableau de Bord</h1>
+      <div class="user-info">
+        <span id="welcome-user"></span>
+        <a href="../index.php" id="logout-btn" class="btn btn-secondary"
+          >Déconnexion</a
+        >
+      </div>
     </header>
 
     <main class="container">
-        <!-- Section pour les notifications -->
-        <div id="notification" class="notification"></div>
+      <!-- Section pour les notifications -->
+      <div id="notification" class="notification"></div>
 
-        <!-- Section des données des capteurs -->
-        <section class="card">
-            <h2>Données des Capteurs</h2>
-            <div id="sensor-data-container" class="grid-container">
-                <!-- Les données des capteurs seront injectées ici par JS -->
-                <p>Chargement des données...</p>
-            </div>
-        </section>
+      <!-- Section des données des capteurs -->
+      <section class="card">
+        <h2>Données des Capteurs</h2>
+        <div id="sensor-data-container" class="grid-container">
+          <!-- Les données des capteurs seront injectées ici par JS -->
+          <p>Chargement des données...</p>
+        </div>
+      </section>
 
-        <!-- Section de contrôle des actionneurs -->
-        <section class="card">
-            <h2>Contrôle des Actionneurs (Simulation)</h2>
-            <form id="actuator-form">
-                <div class="form-group slider-group">
-                    <label for="temperature">Température de consigne (°C)</label>
-                    <input type="range" id="temperature" name="temperature" min="10" max="30" value="20" step="0.5">
-                    <span id="temp-value">20.0°C</span>
-                </div>
-                <div class="form-group slider-group">
-                    <label for="humidite">Humidité de consigne (%)</label>
-                    <input type="range" id="humidite" name="humidite" min="30" max="80" value="50">
-                    <span id="hum-value">50%</span>
-                </div>
+      <!-- Section de contrôle des actionneurs -->
+      <section class="card">
+        <h2>Contrôle des Actionneurs (Simulation)</h2>
+        <form id="actuator-form">
+          <div class="form-group slider-group">
+            <label for="temperature">Température de consigne (°C)</label>
+            <input
+              type="range"
+              id="temperature"
+              name="temperature"
+              min="10"
+              max="30"
+              value="20"
+              step="0.5"
+            />
+            <span id="temp-value">20.0°C</span>
+          </div>
+          <div class="form-group slider-group">
+            <label for="humidite">Humidité de consigne (%)</label>
+            <input
+              type="range"
+              id="humidite"
+              name="humidite"
+              min="30"
+              max="80"
+              value="50"
+            />
+            <span id="hum-value">50%</span>
+          </div>
 
-                <!-- NOUVEAU : Slider pour le gaz -->
-                <div class="form-group slider-group">
-                    <label for="gaz">Niveau de gaz (ppm)</label>
-                    <input type="range" id="gaz" name="gaz" min="100" max="1000" value="300" step="10">
-                    <span id="gaz-value">300 ppm</span>
-                </div>
+          <!-- NOUVEAU : Slider pour le gaz -->
+          <div class="form-group slider-group">
+            <label for="gaz">Niveau de gaz (ppm)</label>
+            <input
+              type="range"
+              id="gaz"
+              name="gaz"
+              min="100"
+              max="1000"
+              value="300"
+              step="10"
+            />
+            <span id="gaz-value">300 ppm</span>
+          </div>
 
-                <!-- NOUVEAU : Checkbox pour le buzzer -->
-                <div class="form-group checkbox-group">
-                    <label for="buzzer">Activer le Buzzer</label>
-                    <input type="checkbox" id="buzzer" name="buzzer">
-                </div>
-                
-                <button type="submit" class="btn">Envoyer la Commande Manuelle</button>
-            </form>
-        </section>
+          <!-- NOUVEAU : Checkbox pour le buzzer -->
+          <div class="form-group checkbox-group">
+            <label for="buzzer">Activer le Buzzer</label>
+            <input type="checkbox" id="buzzer" name="buzzer" />
+          </div>
 
-        <!-- Section de contrôle de l'affichage OLED -->
-        <section class="card">
-            <h2>Pilotage de l'Écran OLED</h2>
-            <div id="oled-control-panel">
-                <p>Mettre à jour l'écran avec les données de la base de données toutes les 10 secondes.</p>
-                <div class="oled-buttons">
-                    <button id="start-oled-update" class="btn">Démarrer la MàJ Auto</button>
-                    <button id="stop-oled-update" class="btn btn-secondary" disabled>Arrêter la MàJ Auto</button>
-                </div>
-                <div id="oled-status" class="status-message">
-                    État : Inactif
-                </div>
-            </div>
-        </section>
+          <button type="submit" class="btn">
+            Envoyer la Commande Manuelle
+          </button>
+        </form>
+      </section>
 
-        <section class="card">
-            <h2>Aperçu de l'Activité Récente</h2>
-            <!-- Ce lien rendra tout le conteneur du graphique cliquable -->
-            <a href="analytics.html" class="chart-preview-link">
-                <div class="chart-container chart-preview">
-                    <canvas id="previewChart"></canvas>
-                    <div class="chart-overlay">Voir l'analyse détaillée →</div>
-                </div>
-            </a>
-        </section>
+      <!-- Section de contrôle de l'affichage OLED -->
+      <section class="card">
+        <h2>Pilotage de l'Écran OLED</h2>
+        <div id="oled-control-panel">
+          <p>
+            Mettre à jour l'écran avec les données de la base de données toutes
+            les 10 secondes.
+          </p>
+          <div class="oled-buttons">
+            <button id="start-oled-update" class="btn">
+              Démarrer la MàJ Auto
+            </button>
+            <button id="stop-oled-update" class="btn btn-secondary" disabled>
+              Arrêter la MàJ Auto
+            </button>
+          </div>
+          <div id="oled-status" class="status-message">État : Inactif</div>
+        </div>
+      </section>
 
-        
+      <section class="card">
+        <h2>Aperçu de l'Activité Récente</h2>
+        <!-- Ce lien rendra tout le conteneur du graphique cliquable -->
+        <a href="analytics.html" class="chart-preview-link">
+          <div class="chart-container chart-preview">
+            <canvas id="previewChart"></canvas>
+            <div class="chart-overlay">Voir l'analyse détaillée →</div>
+          </div>
+        </a>
+      </section>
     </main>
 
     <script src="js/app.js"></script>
-</body>
+  </body>
 </html>
