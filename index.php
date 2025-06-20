@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brewhouse Control - L'Art du Brassage de Précision</title>
+    <title>APP Brassage - L'Art du Brassage de Précision</title>
     <link rel="stylesheet" href="frontend/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
+
 <body class="home-page">
 
     <header class="home-header">
         <div class="logo">
-            <span class="logo-icon">🍺</span>
-            <span class="logo-text">Brewhouse Control</span>
+            <span class="logo-text">APP Brassage</span>
         </div>
         <nav>
             <a href="frontend/login.html" class="btn btn-secondary">Connexion</a>
@@ -36,15 +37,15 @@
                 <h2>Une Plateforme Conçue pour les Brasseurs Exigeants</h2>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <h3>🌡️ Suivi en Temps Réel</h3>
+                        <h3>Suivi en Temps Réel</h3>
                         <p>Gardez un œil constant sur la température et l'humidité, deux facteurs cruciaux pour une fermentation parfaite et des saveurs maîtrisées.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>⚙️ Contrôle à Distance</h3>
+                        <h3>Contrôle à Distance</h3>
                         <p>Ajustez les consignes de votre installation directement depuis votre tableau de bord, que vous soyez au bureau ou en déplacement.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>📈 Historique des Données</h3>
+                        <h3>Historique des Données</h3>
                         <p>Analysez les données de vos brassins précédents pour comprendre, affiner vos recettes et garantir une qualité constante.</p>
                     </div>
                 </div>
@@ -54,7 +55,7 @@
         <section class="alternating-section">
             <div class="container-flex">
                 <div class="image-container">
-                    <img src="https://images.pexels.com/photos/1267438/pexels-photo-1267438.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Cuves de brassage en acier inoxydable">
+                    <img src="./frontend/img/bière-img1.jpg" alt="Tonneau de brassage">
                 </div>
                 <div class="text-container">
                     <h2>Un Contrôle Absolu, Goutte par Goutte</h2>
@@ -87,8 +88,9 @@
     </main>
 
     <footer class="home-footer">
-        <p>© <?php echo date("Y"); ?> Brewhouse Control. Tous droits réservés.</p>
+        <p>© <?php echo date("Y"); ?> APP Brassage. Tous droits réservés.</p>
     </footer>
 
 </body>
+
 </html>

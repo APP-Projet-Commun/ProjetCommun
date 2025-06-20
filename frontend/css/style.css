@@ -235,7 +235,7 @@ header h1 {
     padding: 2rem;
     position: relative;
     overflow: hidden; /* Important pour l'overlay */
-    background-image: url('https://images.pexels.com/photos/5951368/pexels-photo-5951368.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-image: url('../img/bière-pression.jpg');
     background-size: cover;
     background-position: center center;
 }
@@ -402,7 +402,7 @@ header h1 {
     color: white;
     padding: 5rem 1rem;
     text-align: center;
-    background-image: linear-gradient(rgba(40, 43, 48, 0.9), rgba(40, 43, 48, 0.9)), url('https://images.pexels.com/photos/167832/pexels-photo-167832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-image: linear-gradient(rgba(40, 43, 48, 0.9), rgba(40, 43, 48, 0.9)), url('../img/brassage-bière.jpg');
     background-size: cover;
     background-attachment: fixed; /* Effet parallax */
 }
@@ -567,4 +567,16 @@ header h1 {
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+
+.features-card p {
+    text-align: center;
+}
+
+footer {
+    text-align: center;
 }
