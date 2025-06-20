@@ -235,7 +235,7 @@ header h1 {
     padding: 2rem;
     position: relative;
     overflow: hidden; /* Important pour l'overlay */
-    background-image: url('../img/bière-pression.jpg');
+    background-image: url('../img/biere2.jpg');
     background-size: cover;
     background-position: center center;
 }
@@ -402,7 +402,7 @@ header h1 {
     color: white;
     padding: 5rem 1rem;
     text-align: center;
-    background-image: linear-gradient(rgba(40, 43, 48, 0.9), rgba(40, 43, 48, 0.9)), url('../img/brassage-bière.jpg');
+    background-image: linear-gradient(rgba(40, 43, 48, 0.9), rgba(40, 43, 48, 0.9)), url('../img/biere3.jpg');
     background-size: cover;
     background-attachment: fixed; /* Effet parallax */
 }

@@ -55,7 +55,7 @@
         <section class="alternating-section">
             <div class="container-flex">
                 <div class="image-container">
-                    <img src="./frontend/img/bière-img1.jpg" alt="Tonneau de brassage">
+                    <img src="./frontend/img/biere1.jpg" alt="Tonneau de brassage">
                 </div>
                 <div class="text-container">
                     <h2>Un Contrôle Absolu, Goutte par Goutte</h2>
